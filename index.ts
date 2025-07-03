@@ -2,41 +2,41 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
-async function createApp() {
-  const app = express();
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: false }));
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-  app.use((req, res, next) => {
-    const start = Date.now();
-    const path = req.path;
-    let capturedJsonResponse: Record<string, any> | undefined = undefined;
+app.use((req, res, next) => {
+  const start = Date.now();
+  const path = req.path;
+  let capturedJsonResponse: Record<string, any> | undefined = undefined;
 
-    const originalResJson = res.json;
-    res.json = function (bodyJson, ...args) {
-      capturedJsonResponse = bodyJson;
-      return originalResJson.apply(res, [bodyJson, ...args]);
-    };
+  const originalResJson = res.json;
+  res.json = function (bodyJson, ...args) {
+    capturedJsonResponse = bodyJson;
+    return originalResJson.apply(res, [bodyJson, ...args]);
+  };
 
-    res.on("finish", () => {
-      const duration = Date.now() - start;
-      if (path.startsWith("/api")) {
-        let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
-        if (capturedJsonResponse) {
-          logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
-        }
-
-        if (logLine.length > 80) {
-          logLine = logLine.slice(0, 79) + "…";
-        }
-
-        log(logLine);
+  res.on("finish", () => {
+    const duration = Date.now() - start;
+    if (path.startsWith("/api")) {
+      let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
+      if (capturedJsonResponse) {
+        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
       }
-    });
 
-    next();
+      if (logLine.length > 80) {
+        logLine = logLine.slice(0, 79) + "…";
+      }
+
+      log(logLine);
+    }
   });
 
+  next();
+});
+
+async function setupApp() {
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
@@ -56,23 +56,18 @@ async function createApp() {
     serveStatic(app);
   }
 
-  return app;
+  return { app, server };
 }
 
-export { createApp };
+// For Vercel serverless deployment - export the app directly
+export default app;
 
-// For Vercel serverless deployment
-export default async function handler(req: Request, res: Response) {
-  const app = await createApp();
-  return app(req, res);
-}
-
-// For local development
-if (process.env.NODE_ENV === "development") {
-  (async () => {
-    const app = await createApp();
-    const server = await registerRoutes(app);
-
+// Initialize the app for both development and production
+(async () => {
+  const { app, server } = await setupApp();
+  
+  // For local development
+  if (process.env.NODE_ENV === "development") {
     // ALWAYS serve the app on port 5000
     // this serves both the API and the client.
     // It is the only port that is not firewalled.
@@ -84,15 +79,10 @@ if (process.env.NODE_ENV === "development") {
     }, () => {
       log(`serving on port ${port}`);
     });
-  })();
-}
-
-// Also run in production build
-if (process.env.NODE_ENV === "production" && !process.env.VERCEL) {
-  (async () => {
-    const app = await createApp();
-    const server = await registerRoutes(app);
-
+  }
+  
+  // Also run in production build (not Vercel)
+  if (process.env.NODE_ENV === "production" && !process.env.VERCEL) {
     const port = process.env.PORT || 5000;
     server.listen({
       port,
@@ -101,5 +91,5 @@ if (process.env.NODE_ENV === "production" && !process.env.VERCEL) {
     }, () => {
       log(`serving on port ${port}`);
     });
-  })();
-}
+  }
+})();
