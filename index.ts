@@ -59,6 +59,11 @@ async function setupApp() {
   return { app, server };
 }
 
+// Initialize for Vercel
+if (process.env.VERCEL) {
+  setupApp();
+}
+
 // For Vercel serverless deployment - export the app directly
 export default app;
 
