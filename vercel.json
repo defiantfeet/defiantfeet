@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "buildCommand": "echo 'Using pre-built static files'",
+  "outputDirectory": ".",
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}
