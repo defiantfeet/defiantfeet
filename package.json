@@ -1,8 +1,0 @@
-{
-  "name": "defiantfeet-static",
-  "version": "1.0.0",
-  "scripts": {
-    "build": "echo 'Static files already built' && exit 0"
-  },
-  "dependencies": {}
-}
