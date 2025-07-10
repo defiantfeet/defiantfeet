@@ -1,34 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <meta name="theme-color" content="#6366f1" />
-    <link rel="manifest" href="/manifest.json" />
-    <link rel="apple-touch-icon" href="/icon-192.png" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="DefiantFeet" />
-    <title>DefiantFeet - Social Platform for Dancers</title>
-    <meta name="description" content="DefiantFeet is the premier social platform for dancers to share videos, connect anonymously through tips and subscriptions, showcase professional headshots, and discover events. Features AI-powered performance analysis and training recommendations." />
-    <script type="module" crossorigin src="/assets/index-HXVor51_.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-CVgZOC8Q.css">
-  </head>
-  <body>
-    <div id="root"></div>
-    <script>
-      // Register service worker for PWA functionality
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js')
-            .then((registration) => {
-              console.log('SW registered: ', registration);
-            })
-            .catch((registrationError) => {
-              console.log('SW registration failed: ', registrationError);
-            });
-        });
-      }
-    </script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DefiantFeet - Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+        .status {
+            background: rgba(0, 255, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .coming-soon {
+            background: rgba(255, 255, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🕺 DefiantFeet 💃</h1>
+        <p>The Premier Social Platform for Dancers</p>
+        
+        <div class="status">
+            ✅ Website Successfully Deployed!
+        </div>
+        
+        <div class="coming-soon">
+            🚧 Full Application Coming Soon
+        </div>
+        
+        <p>Features include:</p>
+        <ul style="text-align: left; max-width: 400px; margin: 0 auto;">
+            <li>📹 Video sharing with AI analysis</li>
+            <li>💰 Anonymous tipping system</li>
+            <li>📸 Professional headshot galleries</li>
+            <li>🎪 Event management</li>
+            <li>📧 Newsletter system</li>
+            <li>🏆 Training recommendations</li>
+            <li>💳 Subscription management</li>
+        </ul>
+        
+        <p style="margin-top: 30px; font-size: 1rem; opacity: 0.8;">
+            Deployment Status: <strong>Active</strong><br>
+            Version: 1.0.0-static
+        </p>
+    </div>
+</body>
 </html>
